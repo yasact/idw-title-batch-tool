@@ -1,4 +1,4 @@
-namespace IdwTitleBatchTool;
+namespace IdwTitleBatchTool.Forms;
 
 partial class MainForm
 {

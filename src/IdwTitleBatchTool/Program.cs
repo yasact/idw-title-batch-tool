@@ -1,3 +1,5 @@
+using IdwTitleBatchTool.Forms;
+
 namespace IdwTitleBatchTool;
 
 static class Program

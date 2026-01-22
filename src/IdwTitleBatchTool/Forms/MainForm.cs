@@ -1,7 +1,7 @@
 using IdwTitleBatchTool.Models;
 using IdwTitleBatchTool.Services;
 
-namespace IdwTitleBatchTool;
+namespace IdwTitleBatchTool.Forms;
 
 public partial class MainForm : Form
 {
