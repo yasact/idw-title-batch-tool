@@ -85,7 +85,8 @@
         <materialDesign:Card Grid.Row="1"
                 Padding="0"
                 Margin="0,0,0,16">
-            <DataGrid ItemsSource="{Binding Properties}"
+            <DataGrid x:Name="dataGrid"
+                      ItemsSource="{Binding Properties}"
                       AutoGenerateColumns="False"
                       CanUserAddRows="False"
                       CanUserDeleteRows="False"
@@ -97,7 +98,11 @@
                       HorizontalScrollBarVisibility="Auto"
                       GridLinesVisibility="Vertical"
                       VerticalGridLinesBrush="{DynamicResource MaterialDesign.Brush.Primary}"
-                      PreviewKeyDown="DataGrid_PreviewKeyDown">
+                      BeginningEdit="DataGrid_BeginningEdit">
+                <DataGrid.CommandBindings>
+                    <CommandBinding Command="ApplicationCommands.Paste" Executed="DataGrid_Paste" />
+                    <CommandBinding Command="ApplicationCommands.Copy" Executed="DataGrid_Copy" />
+                </DataGrid.CommandBindings>
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="ファイル名"
                             Binding="{Binding FileName}"
