@@ -26,6 +26,7 @@ partial class MainForm
         this.dataGridView = new DataGridView();
         this.btnRead = new Button();
         this.btnWrite = new Button();
+        this.btnApplyFileName = new Button();
         this.btnClose = new Button();
         this.lblStatus = new Label();
         this.panelTop = new Panel();
@@ -67,13 +68,15 @@ partial class MainForm
         this.dataGridView.AllowUserToDeleteRows = false;
         this.dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
         this.dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-        this.dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+        this.dataGridView.SelectionMode = DataGridViewSelectionMode.CellSelect;
         this.dataGridView.BackgroundColor = SystemColors.Window;
         this.dataGridView.BorderStyle = BorderStyle.Fixed3D;
+        this.dataGridView.EditMode = DataGridViewEditMode.EditOnEnter;
 
         // panelBottom
         this.panelBottom.Controls.Add(this.btnRead);
         this.panelBottom.Controls.Add(this.btnWrite);
+        this.panelBottom.Controls.Add(this.btnApplyFileName);
         this.panelBottom.Controls.Add(this.btnClose);
         this.panelBottom.Controls.Add(this.lblStatus);
         this.panelBottom.Dock = DockStyle.Bottom;
@@ -92,6 +95,12 @@ partial class MainForm
         this.btnWrite.Location = new Point(120, 12);
         this.btnWrite.Click += btnWrite_Click;
 
+        // btnApplyFileName
+        this.btnApplyFileName.Text = "ファイル名から取得";
+        this.btnApplyFileName.Size = new Size(130, 35);
+        this.btnApplyFileName.Location = new Point(230, 12);
+        this.btnApplyFileName.Click += btnApplyFileName_Click;
+
         // btnClose
         this.btnClose.Text = "閉じる";
         this.btnClose.Size = new Size(100, 35);
@@ -102,13 +111,13 @@ partial class MainForm
         // lblStatus
         this.lblStatus.Text = "準備完了";
         this.lblStatus.AutoSize = true;
-        this.lblStatus.Location = new Point(240, 20);
+        this.lblStatus.Location = new Point(370, 20);
         this.lblStatus.ForeColor = Color.DarkBlue;
 
         // MainForm
         this.AutoScaleDimensions = new SizeF(7F, 15F);
         this.AutoScaleMode = AutoScaleMode.Font;
-        this.ClientSize = new Size(900, 600);
+        this.ClientSize = new Size(2000, 600);
         this.Controls.Add(this.dataGridView);
         this.Controls.Add(this.panelTop);
         this.Controls.Add(this.panelBottom);
@@ -136,4 +145,5 @@ partial class MainForm
     private Label lblStatus;
     private Panel panelTop;
     private Panel panelBottom;
+    private Button btnApplyFileName;
 }

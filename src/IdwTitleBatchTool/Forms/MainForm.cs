@@ -141,9 +141,42 @@ public partial class MainForm : Form
     {
         btnRead.Enabled = enabled;
         btnWrite.Enabled = enabled;
+        btnApplyFileName.Enabled = enabled;
         btnClose.Enabled = enabled;
         btnSelectFolder.Enabled = enabled;
         lblStatus.Text = enabled ? "準備完了" : "処理中...";
+    }
+
+    private void btnApplyFileName_Click(object sender, EventArgs e)
+    {
+        if (_properties.Count == 0)
+        {
+            MessageBox.Show("先にファイルを読み込んでください。", "エラー",
+                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return;
+        }
+
+        foreach (var prop in _properties)
+        {
+            var fileName = Path.GetFileNameWithoutExtension(prop.FileName);
+            var parts = fileName.Split('_');
+
+            // 図番: 最初の _ までの部分
+            if (parts.Length >= 1)
+            {
+                prop.DrawingNumber = parts[0];
+            }
+
+            // 名称2: 3番目の _ 以降の部分
+            if (parts.Length >= 4)
+            {
+                prop.Title2 = string.Join("_", parts.Skip(3));
+            }
+        }
+
+        _bindingSource.ResetBindings(false);
+        MessageBox.Show("ファイル名から図番・名称2を取得しました。", "完了",
+            MessageBoxButtons.OK, MessageBoxIcon.Information);
     }
 
     private void ConfigureDataGridViewColumns()
@@ -154,9 +187,9 @@ public partial class MainForm : Form
         var columnSettings = new Dictionary<string, (string Header, int Width, bool ReadOnly)>
         {
             ["FilePath"] = ("ファイルパス", 200, true),
-            ["FileName"] = ("ファイル名", 120, true),
-            ["CompanyName1"] = ("会社名1", 100, false),
-            ["CompanyName2"] = ("会社名2", 100, false),
+            ["FileName"] = ("ファイル名", 200, true),
+            ["CompanyName1"] = ("会社名1", 200, false),
+            ["CompanyName2"] = ("会社名2", 200, false),
             ["Title1"] = ("名称1", 120, false),
             ["Title2"] = ("名称2", 120, false),
             ["DrawingNumber"] = ("図番", 100, false),
@@ -189,5 +222,27 @@ public partial class MainForm : Form
     {
         _inventorService.Dispose();
         base.OnFormClosing(e);
+    }
+
+    protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+    {
+        // Ctrl+V: 選択中の全セルに一括ペースト
+        if (keyData == (Keys.Control | Keys.V) && dataGridView.SelectedCells.Count > 1)
+        {
+            if (Clipboard.ContainsText())
+            {
+                dataGridView.EndEdit();
+                var text = Clipboard.GetText().Trim();
+                foreach (DataGridViewCell cell in dataGridView.SelectedCells)
+                {
+                    if (!cell.ReadOnly)
+                    {
+                        cell.Value = text;
+                    }
+                }
+                return true;
+            }
+        }
+        return base.ProcessCmdKey(ref msg, keyData);
     }
 }
