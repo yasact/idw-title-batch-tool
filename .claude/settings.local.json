@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(powershell -Command \"Expand-Archive -Path ''idw表題欄一括変更ツール_03.xlsm'' -DestinationPath ''xlsm_extracted'' -Force\")",
+      "Bash(pip show:*)",
+      "Bash(pip install:*)"
+    ]
+  }
+}
