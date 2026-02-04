@@ -54,8 +54,19 @@ public partial class MainWindow : Window
             var item = firstCell.Item;
             var propertyName = binding.Path.Path;
             var property = item.GetType().GetProperty(propertyName);
-            var value = property?.GetValue(item)?.ToString() ?? "";
-            Clipboard.SetText(value);
+            var value = property?.GetValue(item);
+
+            string textValue;
+            if (value is DateTime dateValue)
+            {
+                textValue = dateValue.ToString("yyyy/MM/dd");
+            }
+            else
+            {
+                textValue = value?.ToString() ?? "";
+            }
+
+            Clipboard.SetText(textValue);
             e.Handled = true;
         }
     }
@@ -82,9 +93,19 @@ public partial class MainWindow : Window
                     var item = cellInfo.Item;
                     var propertyName = binding.Path.Path;
                     var property = item.GetType().GetProperty(propertyName);
-                    if (property != null && property.PropertyType == typeof(string))
+                    if (property != null)
                     {
-                        property.SetValue(item, text);
+                        if (property.PropertyType == typeof(string))
+                        {
+                            property.SetValue(item, text);
+                        }
+                        else if (property.PropertyType == typeof(DateTime))
+                        {
+                            if (DateTime.TryParse(text, out var dateValue))
+                            {
+                                property.SetValue(item, dateValue);
+                            }
+                        }
                     }
                 }
             }
